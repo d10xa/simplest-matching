@@ -6,7 +6,12 @@ object Match {
   type Stock = Char
   type ClientId = String
   final case class Client(id: ClientId, balance: Long, stocks: Map[Stock, Long]) {
-    override def toString: ClientId = s"$id\t$balance\t${stocks.values.toList.mkString("\t")}"
+    private def stocksAsString: String = stocks
+      .toList
+      .sortBy(_._1)
+      .map(_._2)
+      .mkString("\t")
+    override def toString: ClientId = s"$id\t$balance\t$stocksAsString"
   }
   sealed trait Operation {
     def balanceOp: (Long, Long) => Long
